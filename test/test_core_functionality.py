@@ -10,7 +10,20 @@ WEIRD_SALARY = Decimal("10334.82")
 
 
 def test_finds_persons_by_name():
-    assert person_finder.find_by_name("William")
+    actual = list(person_finder.find_by_name("William"))
+    assert len(actual) > 0
+
+    filtered = list(
+        filter(lambda item: item and item["name"] == "HORVATH II,WILLIAM", actual)
+    )
+    assert len(filtered) == 1
+    only = filtered[0]
+    assert only["salary"] == Decimal("130313.00")
+
+
+def test_finds_persons_by_name_dept():
+    actual = person_finder.find_by_name_dept(name="William", dept="ICPSR")
+    assert len(actual) == 1
 
 
 def test_does_not_find_non_existent_person_by_name():

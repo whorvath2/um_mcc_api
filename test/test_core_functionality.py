@@ -1,5 +1,7 @@
 from decimal import Decimal
 
+import pytest
+
 from co.deability.um_mcc import person_finder, cost_calulator
 
 minutes_per_year = int(60 * 2080)
@@ -10,9 +12,9 @@ WEIRD_SALARY = Decimal("10334.82")
 
 
 def test_finds_persons_by_name():
-    actual = list(person_finder.find_by_name("William"))
+    args = {"name": "William"}
+    actual = person_finder.find(args)
     assert len(actual) > 0
-
     filtered = list(
         filter(lambda item: item and item["name"] == "HORVATH II,WILLIAM", actual)
     )
@@ -22,12 +24,43 @@ def test_finds_persons_by_name():
 
 
 def test_finds_persons_by_name_dept():
-    actual = person_finder.find_by_name_dept(name="William", dept="ICPSR")
+    args = {"name": "William", "department": "ICPSR"}
+    actual = person_finder.find(args)
     assert len(actual) == 1
 
 
+def test_finds_persons_by_name_title():
+    args = {"name": "William", "title": "App Programming"}
+    actual = person_finder.find(args)
+    assert len(actual) == 1
+
+
+def test_does_not_find_person_when_title_or_dept_is_wrong():
+    args = {"name": "William", "title": "foobar"}
+    actual = person_finder.find(args)
+    assert len(actual) == 0
+
+    args = {"name": "William", "department": "foobar"}
+    actual = person_finder.find(args)
+    assert len(actual) == 0
+
+    args = {"name": "William", "department": "ICPSR", "title": "foobar"}
+    actual = person_finder.find(args)
+    assert len(actual) == 0
+
+
+def test_fails_without_name():
+    with pytest.raises(KeyError):
+        actual = person_finder.find({})
+
+    with pytest.raises(KeyError):
+        args = {"department": "ICPSR", "title": "App Programming"}
+        actual = person_finder.find(args)
+
+
 def test_does_not_find_non_existent_person_by_name():
-    assert len(list(person_finder.find_by_name("foobar"))) == 0
+    args = {"name": "foobar"}
+    assert len(list(person_finder.find(args))) == 0
 
 
 def test_calculates_per_minute_cost_correctly():

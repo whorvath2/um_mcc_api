@@ -1,9 +1,10 @@
-from co.deability.um_mcc import SALARY_DATA, Employee
 from typing import Any, Dict, Iterator, List
+
+from co.deability.um_mcc import Employee, SALARY_DATA
 
 
 def find(args: dict[str, str]) -> List[Dict[str, Any]]:
-    name: str = args.get("name")
+    name: str = args.get(Employee.NAME)
     if not name:
         raise KeyError(
             "You must include a query parameter called name with a non-empty value"
@@ -22,7 +23,7 @@ def find(args: dict[str, str]) -> List[Dict[str, Any]]:
 def _find_by_name(name: str) -> Iterator[Dict[str, Any]]:
     assert name
     name_uc: str = name.upper()
-    return filter(lambda item: name_uc in item["name"], SALARY_DATA)
+    return filter(lambda item: name_uc in item[Employee.NAME], SALARY_DATA)
 
 
 def find_by_name_dept(name: str, dept: str) -> List[Dict[str, Any]]:
@@ -35,7 +36,7 @@ def find_by_name_dept(name: str, dept: str) -> List[Dict[str, Any]]:
     else:
         assert len(possible_matches) > 1
         return list(
-            filter(lambda item: dept_uc in item["department"], possible_matches)
+            filter(lambda item: dept_uc in item[Employee.DEPARTMENT], possible_matches)
         )
 
 
@@ -44,11 +45,13 @@ def _find_by_name_title(name: str, title: str) -> List[Dict[str, Any]]:
     if not possible_matches:
         return []
     title_uc: str = title.upper()
-    if len(possible_matches) == 1 and title == possible_matches[0]["title"]:
+    if len(possible_matches) == 1 and title == possible_matches[0][Employee.TITLE]:
         return [possible_matches[0]]
     else:
         assert len(possible_matches) > 1
-        return list(filter(lambda item: title_uc in item["title"], possible_matches))
+        return list(
+            filter(lambda item: title_uc in item[Employee.TITLE], possible_matches)
+        )
 
 
 def _find_by_name_dept_title(name: str, dept: str, title: str) -> List[Dict[str, Any]]:
@@ -56,11 +59,13 @@ def _find_by_name_dept_title(name: str, dept: str, title: str) -> List[Dict[str,
         find_by_name_dept(name=name, dept=dept)
     )
     title_uc = title.upper()
-    if len(possible_matches) == 1 and title_uc == possible_matches[0]["title"]:
+    if len(possible_matches) == 1 and title_uc == possible_matches[0][Employee.TITLE]:
         return [possible_matches[0]]
     else:
         return (
-            list(filter(lambda item: title_uc in item["title"], possible_matches))
+            list(
+                filter(lambda item: title_uc in item[Employee.TITLE], possible_matches)
+            )
             if possible_matches
             else []
         )

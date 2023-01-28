@@ -2,7 +2,7 @@ import html
 from decimal import Decimal
 from enum import Enum
 from pathlib import Path
-from typing import Dict, Iterator, List, Final, Any
+from typing import Any, Dict, Final, Iterator, List
 
 from flask import Flask
 
@@ -16,7 +16,14 @@ def init_app() -> Flask:
     app.static_folder = Path(app.root_path, "build")
     app.static_url_path = "/"
     app.url_map.strict_slashes = False
+    _register_blueprints(app)
     return app
+
+
+def _register_blueprints(app: Flask):
+    from co.deability.um_mcc.controller import mcc_blueprint
+
+    app.register_blueprint(mcc_blueprint)
 
 
 class Employee(str, Enum):

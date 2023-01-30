@@ -17,10 +17,11 @@
     <orderEntry type="jdk" jdkName="Python 3.9 (UM_MCC)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="@babel/standalone" level="application" />
+    <orderEntry type="library" name="react-router-dom" level="application" />
   </component>
   <component name="PackageRequirementsSettings">
-    <option name="requirementsPath" value="pyproject.toml" />
-    <option name="removeUnused" value="true" />
+    <option name="requirementsPath" value="$MODULE_DIR$/setup.cfg" />
+    <option name="versionSpecifier" value="Don't specify version" />
   </component>
   <component name="PyNamespacePackagesService">
     <option name="namespacePackageFolders">

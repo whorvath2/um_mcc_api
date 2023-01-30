@@ -26,7 +26,7 @@ def _register_blueprints(app: Flask):
     app.register_blueprint(mcc_blueprint)
 
 
-class Employee(str, Enum):
+class EmployeeProperties(str, Enum):
     NAME = "name"
     TITLE = "title"
     DEPARTMENT = "department"
@@ -48,10 +48,10 @@ def _parse_line(line: str):
     words: List[str] = line.split("|")
     assert len(words) == 8
     return {
-        Employee.NAME: words[1].upper(),
-        Employee.TITLE: words[2].upper(),
-        Employee.DEPARTMENT: words[3].upper(),
-        Employee.SALARY: Decimal("".join(words[4].split(","))),
+        EmployeeProperties.NAME: words[1].upper(),
+        EmployeeProperties.TITLE: words[2].upper(),
+        EmployeeProperties.DEPARTMENT: words[3].upper(),
+        EmployeeProperties.SALARY: Decimal("".join(words[4].split(","))),
     }
 
 

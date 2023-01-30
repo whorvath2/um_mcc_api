@@ -1,6 +1,8 @@
 import decimal
 from decimal import Decimal
-from typing import Any, Final, List
+from typing import Any, Dict, Final, List
+
+from co.deability.um_mcc import EmployeeProperties
 
 minutes_per_year: int = 2080 * 60
 MINUTES_PER_YEAR: Final[Decimal] = Decimal(str(minutes_per_year) + ".00")
@@ -40,3 +42,10 @@ def calc_meeting_cost(salaries: List[Decimal], minutes: int) -> Decimal:
     return sum(
         [calc_attendee_cost(salary=salary, minutes=minutes) for salary in salaries]
     )
+
+
+def calc_meeting_cost_from_attendees(attendees: List[Dict[str, Any]], minutes: int):
+    salaries: List[Decimal] = [
+        attendee.get(EmployeeProperties.SALARY) for attendee in attendees
+    ]
+    return calc_meeting_cost(salaries=salaries, minutes=minutes)

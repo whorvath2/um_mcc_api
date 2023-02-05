@@ -18,6 +18,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="@babel/standalone" level="application" />
     <orderEntry type="library" name="react-router-dom" level="application" />
+    <orderEntry type="library" name="react" level="application" />
   </component>
   <component name="PackageRequirementsSettings">
     <option name="requirementsPath" value="$MODULE_DIR$/setup.cfg" />

@@ -1,4 +1,5 @@
 import decimal
+import logging
 from decimal import Decimal
 from typing import Any, Dict, Final, List
 
@@ -35,6 +36,7 @@ def calc_per_min_cost(salary: Decimal) -> Decimal:
 
 def calc_attendee_cost(salary: Decimal, minutes: int) -> Decimal:
     attendee_cost: Decimal = calc_per_min_cost(salary=salary) * minutes
+    logging.getLogger().info(attendee_cost)
     return attendee_cost
 
 
@@ -44,8 +46,10 @@ def calc_meeting_cost(salaries: List[Decimal], minutes: int) -> Decimal:
     )
 
 
-def calc_meeting_cost_from_attendees(attendees: List[Dict[str, Any]], minutes: int):
+def calc_meeting_cost_from_attendees(
+    attendees: List[Dict[str, Any]], minutes: int
+) -> Dict[str, Decimal]:
     salaries: List[Decimal] = [
         attendee.get(EmployeeProperties.SALARY) for attendee in attendees
     ]
-    return calc_meeting_cost(salaries=salaries, minutes=minutes)
+    return {"cost": calc_meeting_cost(salaries=salaries, minutes=minutes)}

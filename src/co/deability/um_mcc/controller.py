@@ -1,9 +1,8 @@
-import json
+import logging
 from http import HTTPStatus
 from typing import Dict, Final
 
 from flask import Blueprint, jsonify, make_response, request
-from werkzeug.exceptions import BadRequest
 
 from co.deability.um_mcc import cost_calculator, person_finder
 
@@ -30,18 +29,26 @@ def find_staff():
     )
 
 
-@mcc_blueprint.get("/cost/<int:meeting_length_minutes>")
+@mcc_blueprint.post("/cost/<int:meeting_length_minutes>")
 def calculate_meeting_cost(meeting_length_minutes):
+    logging.getLogger().info(request)
     return (
         make_response(
             jsonify(
                 cost_calculator.calc_meeting_cost_from_attendees(
-                    attendees=json.loads(request.json), minutes=meeting_length_minutes
+                    attendees=request.json, minutes=meeting_length_minutes
                 )
-            )
+            ),
+            HTTPStatus.OK,
         )
-        if request.json
-        else BadRequest(
-            "The request body must contain a JSON-formatted list of employees"
-        )
+        # if request.json
+        # else make_response(
+        #     jsonify(
+        #         {
+        #             "error": "The request body must contain a JSON-formatted list of employees"
+        #         }
+        #     ),
+        #     HTTPStatus.BAD_REQUEST,
+        #     ACCESS_CONTROL_HEADER,
+        # )
     )

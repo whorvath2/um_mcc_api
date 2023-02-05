@@ -1,4 +1,4 @@
-from co.deability.um_mcc.app import app
+from co.deability.um_mcc import app
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8662)
+    app.run_app()

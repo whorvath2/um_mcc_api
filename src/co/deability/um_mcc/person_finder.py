@@ -1,4 +1,4 @@
-from typing import Any, Dict, Iterator, List
+from typing import Any, Dict, List
 
 from co.deability.um_mcc import EmployeeProperties, SALARY_DATA
 
@@ -16,17 +16,21 @@ def find(args: dict[str, str]) -> List[Dict[str, Any]]:
     if title:
         return _find_by_name_title(name=name, title=title)
     if department:
-        return find_by_name_dept(name=name, dept=department)
+        return _find_by_name_dept(name=name, dept=department)
     return list(_find_by_name(name=name))
 
 
-def _find_by_name(name: str) -> Iterator[Dict[str, Any]]:
+def _find_by_name(name: str) -> List[Dict[str, Any]]:
     assert name
     name_uc: str = name.upper()
-    return filter(lambda item: name_uc in item[EmployeeProperties.NAME], SALARY_DATA)
+    result: List[Dict[str, Any]] = list(
+        filter(lambda item: name_uc in item[EmployeeProperties.NAME], SALARY_DATA)
+    )
+    result.sort(key=(lambda item: item.get(EmployeeProperties.NAME)))
+    return result
 
 
-def find_by_name_dept(name: str, dept: str) -> List[Dict[str, Any]]:
+def _find_by_name_dept(name: str, dept: str) -> List[Dict[str, Any]]:
     possible_matches: List[Dict[str, Any]] = list(_find_by_name(name=name))
     if not possible_matches:
         return []
@@ -68,7 +72,7 @@ def _find_by_name_title(name: str, title: str) -> List[Dict[str, Any]]:
 
 def _find_by_name_dept_title(name: str, dept: str, title: str) -> List[Dict[str, Any]]:
     possible_matches: List[Dict[str, Any]] = list(
-        find_by_name_dept(name=name, dept=dept)
+        _find_by_name_dept(name=name, dept=dept)
     )
     title_uc = title.upper()
     if (

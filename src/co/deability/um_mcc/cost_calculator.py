@@ -1,4 +1,5 @@
 import decimal
+import json
 import logging
 from decimal import Decimal
 from typing import Any, Dict, Final, List
@@ -49,7 +50,9 @@ def calc_meeting_cost(salaries: List[Decimal], minutes: int) -> Decimal:
 def calc_meeting_cost_from_attendees(
     attendees: List[Dict[str, Any]], minutes: int
 ) -> Dict[str, Decimal]:
+    if isinstance(attendees, str):
+        attendees = json.loads(attendees)
     salaries: List[Decimal] = [
-        attendee.get(EmployeeProperties.SALARY) for attendee in attendees
+        dict(attendee).get(EmployeeProperties.SALARY) for attendee in attendees
     ]
     return {"cost": calc_meeting_cost(salaries=salaries, minutes=minutes)}

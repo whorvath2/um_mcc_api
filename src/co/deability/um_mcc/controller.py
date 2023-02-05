@@ -1,4 +1,3 @@
-import logging
 from http import HTTPStatus
 from typing import Dict, Final
 
@@ -31,7 +30,6 @@ def find_staff():
 
 @mcc_blueprint.post("/cost/<int:meeting_length_minutes>")
 def calculate_meeting_cost(meeting_length_minutes):
-    logging.getLogger().info(request)
     return (
         make_response(
             jsonify(
@@ -41,14 +39,14 @@ def calculate_meeting_cost(meeting_length_minutes):
             ),
             HTTPStatus.OK,
         )
-        # if request.json
-        # else make_response(
-        #     jsonify(
-        #         {
-        #             "error": "The request body must contain a JSON-formatted list of employees"
-        #         }
-        #     ),
-        #     HTTPStatus.BAD_REQUEST,
-        #     ACCESS_CONTROL_HEADER,
-        # )
+        if request.json
+        else make_response(
+            jsonify(
+                {
+                    "error": "The request body must contain a JSON-formatted list of employees"
+                }
+            ),
+            HTTPStatus.BAD_REQUEST,
+            ACCESS_CONTROL_HEADER,
+        )
     )

@@ -9,6 +9,7 @@ ROOT: Final[str] = "/um_mcc"
 FIND: Final[str] = f"{ROOT}/find"
 COST: Final[str] = f"{ROOT}/cost"
 ACCEPT_JSON_HEADERS: Final[Dict[str, str]] = {"Accept": "application/json"}
+CONTENT_JSON_HEADERS: Final[Dict[str, str]] = {"Content-Type": "application/json"}
 
 
 def test_health_check(http_client):
@@ -45,12 +46,15 @@ def test_calculate_meeting_cost(http_client):
             running_total = round(running_total + total, 2)
 
         endpoint = f"{COST}/{int(mtg_minutes)}"
-        response = http_client.get(
-            endpoint, headers=ACCEPT_JSON_HEADERS, json=json.dumps(bills)
+        response = http_client.post(
+            endpoint,
+            headers=ACCEPT_JSON_HEADERS | CONTENT_JSON_HEADERS,
+            json=json.dumps(bills),
         )
         assert response.status_code == HTTPStatus.OK
-        actual = str(response.text).strip('\n"')
-        expected = str(running_total)
+        # actual = str(response.text).strip('\n"')
+        actual = json.loads(response.text)
+        expected = json.loads('{"cost": "' + str(running_total) + '"}')
         assert actual == expected
 
         # SAD PATH
@@ -58,10 +62,13 @@ def test_calculate_meeting_cost(http_client):
         bills = http_client.get(endpoint, headers=ACCEPT_JSON_HEADERS).json
         assert len(bills) == 0
         endpoint = f"{COST}/{int(mtg_minutes)}"
-        response = http_client.get(
-            endpoint, headers=ACCEPT_JSON_HEADERS, json=json.dumps(bills)
+        response = http_client.post(
+            endpoint,
+            headers=ACCEPT_JSON_HEADERS | CONTENT_JSON_HEADERS,
+            json=json.dumps(bills),
         )
         assert response.status_code == HTTPStatus.OK
-        assert int(response.text) == 0
+        actual = json.loads(response.text)
+        assert int(actual["cost"]) == 0
 
         # todo make the controller raise an error if no matching names are found

@@ -1,4 +1,6 @@
 import html
+import os
+import logging
 from decimal import Decimal
 from enum import Enum
 from pathlib import Path
@@ -14,9 +16,9 @@ def init_app() -> Flask:
 
     app: Flask = Flask("um_mcc")
     CORS(app)
-    app.config.from_object("co.deability.um_mcc.config")
-    app.static_folder = Path(app.root_path, "build")
-    app.static_url_path = "/"
+    # app.config.from_object("co.deability.um_mcc.config")
+    # app.static_folder = Path(app.root_path, "build")
+    # app.static_url_path = "/"
     app.url_map.strict_slashes = False
     _register_blueprints(app)
     return app
@@ -43,9 +45,23 @@ def _key_generator() -> Generator[int, None, None]:
         current_key += 1
 
 
+def _find_salary_file() -> Path:
+    salary_file_name: str = "salary-disclosure-2022.csv"
+    um_mcc_dir: Any = os.getenv("UM_MCC_DIR")
+    current_dir: Path = Path(um_mcc_dir) if um_mcc_dir else Path(__file__).parent.resolve()
+    salary_file_path_maker: () = lambda curr_dir: Path(curr_dir, salary_file_name).absolute()
+
+    salary_file_path = salary_file_path_maker(current_dir)
+    while not salary_file_path.exists() and current_dir != Path(current_dir.root):
+        current_dir = current_dir.parent
+        salary_file_path = salary_file_path_maker(current_dir)
+    return salary_file_path
+    
 def _read_file() -> Iterator[Dict]:
-    filedir: Path = Path(__file__).parent
-    filepath: Path = Path(filedir, "resources", "salary-disclosure-2022.csv")
+    filepath: Path = _find_salary_file()
+    if not filepath.exists():
+        logging.getLogger().critical(f"The salary file cannot be found at {filepath}")
+        exit(1)
     key_maker = _key_generator()
     with filepath.open(mode="r", buffering=1) as salaryfile:
         salaryfile.readline()  # ignore header line

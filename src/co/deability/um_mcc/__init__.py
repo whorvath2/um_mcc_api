@@ -10,7 +10,7 @@ from flask import Flask
 from flask_cors import CORS
 from werkzeug.middleware.proxy_fix import ProxyFix
 
-__version__: str = "1.0.0"
+__version__: str = "1.1.0"
 
 
 def init_app() -> Flask:

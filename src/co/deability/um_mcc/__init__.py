@@ -8,8 +8,9 @@ from typing import Any, Dict, Final, Generator, Iterator, List
 
 from flask import Flask
 from flask_cors import CORS
+from werkzeug.middleware.proxy_fix import ProxyFix
 
-__version__: str = "0.0.1"
+__version__: str = "1.0.0"
 
 
 def init_app() -> Flask:
@@ -21,6 +22,7 @@ def init_app() -> Flask:
     # app.static_url_path = "/"
     app.url_map.strict_slashes = False
     _register_blueprints(app)
+    # _add_proxy_fix(app)
     return app
 
 
@@ -28,6 +30,10 @@ def _register_blueprints(app: Flask):
     from co.deability.um_mcc.controller import mcc_blueprint
 
     app.register_blueprint(mcc_blueprint)
+
+
+def _add_proxy_fix(app: Flask):
+    app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
 
 
 class EmployeeProperties(str, Enum):
@@ -48,15 +54,20 @@ def _key_generator() -> Generator[int, None, None]:
 def _find_salary_file() -> Path:
     salary_file_name: str = "salary-disclosure-2022.csv"
     um_mcc_dir: Any = os.getenv("UM_MCC_DIR")
-    current_dir: Path = Path(um_mcc_dir) if um_mcc_dir else Path(__file__).parent.resolve()
-    salary_file_path_maker: () = lambda curr_dir: Path(curr_dir, salary_file_name).absolute()
+    current_dir: Path = (
+        Path(um_mcc_dir) if um_mcc_dir else Path(__file__).parent.resolve()
+    )
+    salary_file_path_maker: () = lambda curr_dir: Path(
+        curr_dir, salary_file_name
+    ).absolute()
 
     salary_file_path = salary_file_path_maker(current_dir)
     while not salary_file_path.exists() and current_dir != Path(current_dir.root):
         current_dir = current_dir.parent
         salary_file_path = salary_file_path_maker(current_dir)
     return salary_file_path
-    
+
+
 def _read_file() -> Iterator[Dict]:
     filepath: Path = _find_salary_file()
     if not filepath.exists():

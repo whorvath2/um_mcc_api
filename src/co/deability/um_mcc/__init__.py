@@ -85,9 +85,10 @@ def _read_file() -> Iterator[Dict]:
 def _parse_line(line: str, key: int):
     words: List[str] = line.split("|")
     assert len(words) == 8
+    name: str = ", ".join(words[1].split(sep=",", maxsplit=1))
     return {
         EmployeeProperties.KEY: key,
-        EmployeeProperties.NAME: words[1].upper(),
+        EmployeeProperties.NAME: name.upper(),
         EmployeeProperties.TITLE: words[2].upper(),
         EmployeeProperties.DEPARTMENT: words[3].upper(),
         EmployeeProperties.SALARY: Decimal("".join(words[4].split(","))),

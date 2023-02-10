@@ -16,7 +16,7 @@ def test_finds_persons_by_name():
     actual = person_finder.find(args)
     assert len(actual) > 0
     filtered = list(
-        filter(lambda item: item and item["name"] == "HORVATH II,WILLIAM", actual)
+        filter(lambda item: item and item["name"] == "HORVATH II, WILLIAM", actual)
     )
     assert len(filtered) == 1
     only = filtered[0]

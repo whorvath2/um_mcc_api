@@ -52,6 +52,8 @@ podman start um_mcc_api
 To verify the API is
 available, [open your browser to the health check endpoint at localhost:8000/um_mcc](http://localhost:8000/um_mcc).
 
+An OpenAPI specification will be available in a future release.
+
 ## Version
 
 1.1.1

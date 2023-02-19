@@ -1,6 +1,6 @@
 import html
-import os
 import logging
+import os
 from decimal import Decimal
 from enum import Enum
 from pathlib import Path
@@ -10,19 +10,16 @@ from flask import Flask
 from flask_cors import CORS
 from werkzeug.middleware.proxy_fix import ProxyFix
 
-__version__: str = "1.1.0"
+
+__version__: str = "1.1.1"
 
 
 def init_app() -> Flask:
-
     app: Flask = Flask("um_mcc")
+    # Remove the next line in production if the API is exposed to the internet
     CORS(app)
-    # app.config.from_object("co.deability.um_mcc.config")
-    # app.static_folder = Path(app.root_path, "build")
-    # app.static_url_path = "/"
     app.url_map.strict_slashes = False
     _register_blueprints(app)
-    # _add_proxy_fix(app)
     return app
 
 

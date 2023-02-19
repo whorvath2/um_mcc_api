@@ -54,19 +54,29 @@ available, [open your browser to the health check endpoint at localhost:8000/um_
 
 An OpenAPI specification will be available in a future release.
 
+## Limitations
+
+The salary data is published annually by the University, and this version of the application uses
+the [November 2022 edition](https://www.dropbox.com/s/ti4iff026agzpak/salary-disclosure-2022.pdf?dl=0). This means:
+
+* Staff's salaries may be out-of-date.
+* Staff hired since the salary data was published will not be found in searches.
+* Staff terminated since the publication of their salary data will still appear in search results.
+
+**As such, staff searches and cost calculations may be inaccurate or incomplete.**
+
 ## Version
 
 1.1.1
 
 ## Disclaimers
 
-## Disclaimers
-
 **THIS APPLICATION IS NEITHER ENDORSED BY NOR ASSOCIATED WITH THE UNIVERSITY OF MICHIGAN®.**
 
 University of Michigan, UM, U-M, and U of M are trademarks™ or registered® trademarks of the University of Michigan. Use
-of them does not imply any affiliation with or endorsement by the University of Michigan. For all other
-disclaimers, [see the LICENSE file in this repository](LICENSE).
+of them does not imply any affiliation with or endorsement by the University of Michigan. **For all other
+disclaimers, including limitations of liability and a disclaimer of
+warranty, [see the LICENSE file in this repository](LICENSE).**
 
 _Thank you termly.io for the disclaimer language._
 

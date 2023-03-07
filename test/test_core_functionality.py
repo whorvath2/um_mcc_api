@@ -4,6 +4,7 @@ import pytest
 
 from co.deability.um_mcc import cost_calculator, person_finder
 
+
 minutes_per_year = int(60 * 2080)
 MINUTES_PER_YEAR = Decimal(str(minutes_per_year) + ".00")
 DOLLAR_PER_MIN_SALARY = MINUTES_PER_YEAR
@@ -16,7 +17,7 @@ def test_finds_persons_by_name():
     actual = person_finder.find(args)
     assert len(actual) > 0
     filtered = list(
-        filter(lambda item: item and item["name"] == "HORVATH II, WILLIAM", actual)
+        filter(lambda item: item and item["name"] == "HORVATH II,WILLIAM", actual)
     )
     assert len(filtered) == 1
     only = filtered[0]

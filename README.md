@@ -24,7 +24,7 @@ This is a [Flask](https://flask.palletsprojects.com/en/2.2.x/)-based REST API wr
 in [Python](https://www.python.org). It
 leverages [publicly available salary data](https://www.dropbox.com/s/ti4iff026agzpak/salary-disclosure-2022.pdf?dl=0) to
 enable the search and selection of meeting attendees and the calculation of meeting cost.
-It [exposes endpoints](src/co/deability/um_mcc/controller.py) for a health check; searching for staff by name, title,
+It [exposes endpoints](src/co/deability/um_mcc/resources.py) for a health check; searching for staff by name, title,
 and department; and for determining the cost of a meeting via a client-supplied list of staff members and the meeting
 length in minutes.
 

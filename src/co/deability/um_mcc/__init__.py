@@ -24,7 +24,7 @@ def init_app() -> Flask:
 
 
 def _register_blueprints(app: Flask):
-    from co.deability.um_mcc.controller import mcc_blueprint
+    from co.deability.um_mcc.resources import mcc_blueprint
 
     app.register_blueprint(mcc_blueprint)
 
@@ -62,6 +62,7 @@ def _find_salary_file() -> Path:
     while not salary_file_path.exists() and current_dir != Path(current_dir.root):
         current_dir = current_dir.parent
         salary_file_path = salary_file_path_maker(current_dir)
+    print(f"salary_file_path = {salary_file_path}")
     return salary_file_path
 
 

@@ -5,6 +5,7 @@ from flask import Blueprint, jsonify, make_response, request
 
 from co.deability.um_mcc import cost_calculator, person_finder
 
+
 mcc_blueprint: Final[Blueprint] = Blueprint("um_mcc", __name__, url_prefix="/um_mcc/")
 
 ACCESS_CONTROL_HEADER: Final[Dict[str, str]] = {"Access-Control-Allow-Origin": "*"}

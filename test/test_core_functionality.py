@@ -12,12 +12,16 @@ FIFTY_SALARY = Decimal("50000.00")
 WEIRD_SALARY = Decimal("10334.82")
 
 
+def name_filter(target_name, item):
+    return item and item["name"] == target_name
+
+
 def test_finds_persons_by_name():
     args = {"name": "William"}
     actual = person_finder.find(args)
     assert len(actual) > 0
     filtered = list(
-        filter(lambda item: item and item["name"] == "HORVATH II,WILLIAM", actual)
+        filter(lambda item: item and item["name"] == "HORVATH II, WILLIAM", actual)
     )
     assert len(filtered) == 1
     only = filtered[0]

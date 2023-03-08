@@ -5,6 +5,7 @@ from typing import Dict, Final
 
 from co.deability.um_mcc import cost_calculator
 
+
 ROOT: Final[str] = "/um_mcc"
 FIND: Final[str] = f"{ROOT}/find"
 COST: Final[str] = f"{ROOT}/cost"

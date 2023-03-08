@@ -17,11 +17,10 @@ build/
 *.crt
 *.key
 *.pem
+
 test/http*.*
 node_modules/
 .pnp
 .pnp.js
 coverage/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+*.log*

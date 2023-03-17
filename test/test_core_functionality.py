@@ -2,7 +2,7 @@ from decimal import Decimal
 
 import pytest
 
-from co.deability.um_mcc import cost_calculator, person_finder
+from co.deability.um_mcc import EmployeeProperties, cost_calculator, person_finder
 
 
 minutes_per_year = int(60 * 2080)
@@ -16,13 +16,20 @@ def name_filter(target_name, item):
     return item and item["name"] == target_name
 
 
+def find_test_name(item: dict):
+    name: str = item.get(EmployeeProperties.NAME)
+    result = name == "HORVATH II, WILLIAM"
+    # result = (
+    #     item is not None and item.get(EmployeeProperties.NAME) == "HORVATH II, WILLIAM"
+    # )
+    return result
+
+
 def test_finds_persons_by_name():
     args = {"name": "William"}
     actual = person_finder.find(args)
     assert len(actual) > 0
-    filtered = list(
-        filter(lambda item: item and item["name"] == "HORVATH II, WILLIAM", actual)
-    )
+    filtered = list(filter(find_test_name, actual))
     assert len(filtered) == 1
     only = filtered[0]
     assert only["salary"] == Decimal("130313.00")

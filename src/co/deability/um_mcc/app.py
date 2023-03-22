@@ -9,4 +9,7 @@ logging.getLogger().info("Starting UM_MCC API...")
 app: Flask = init_app()
 
 if __name__ == "__main__":
-    app.run(port=8000)
+    if app.config["DEBUG"]:
+        app.run(port=8000)
+    else:
+        app.run()

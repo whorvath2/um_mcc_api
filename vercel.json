@@ -1,0 +1,22 @@
+{
+  "buildCommand": null,
+  "cleanUrls": true,
+  "devCommand": "flask --app src/co/deability/um_mcc/app:app run",
+  "framework": null,
+  "functions": {
+    "src/**/*.py": {
+      "runtime": "python@3.9"
+    }
+  },
+  "installCommand": null,
+  "outputDirectory": "src",
+  "public": true,
+  "redirects": [
+    {"source":  "/", "destination":  "/um_mcc"},
+    {
+      "source": "/view-source",
+      "destination": "https://github.com/whorvath2/um-mcc-api"
+    }
+  ],
+  "trailingSlash": true
+}

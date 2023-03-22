@@ -15,7 +15,7 @@ __version__: str = "1.1.1"
 
 
 def init_app() -> Flask:
-    app: Flask = Flask("um_mcc")
+    app: Flask = Flask("um_mcc_api")
     # Remove the next line in production if the API is exposed to the internet
     CORS(app)
     app.url_map.strict_slashes = False
